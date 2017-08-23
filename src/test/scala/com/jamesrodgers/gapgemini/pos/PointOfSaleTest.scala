@@ -1,7 +1,7 @@
 package com.jamesrodgers.gapgemini.pos
 
 import org.scalatest._
-
+import scala.List.fill
 import scala.util.Random.shuffle
 
 class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
@@ -19,27 +19,35 @@ class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
   }
 
   test("A line item should know its total") {
-    (1 to 50) foreach { count =>
+    (0 to 50) foreach { count =>
       LineItem(Apple, count).totalCost should be(count * Apple.price)
       LineItem(Orange, count).totalCost should be(count * Orange.price)
     }
   }
 
   test("Line items can be totalled") {
-    val appleLineItem = LineItem(Apple, 8)
-    val orangeLineItem = LineItem(Orange, 4)
 
-    grandTotal(appleLineItem :: orangeLineItem :: Nil) should be(
-      appleLineItem.totalCost + orangeLineItem.totalCost)
+    for (count <- 0 to 50) {
+
+      val appleLineItem = LineItem(Apple, count)
+      val orangeLineItem = LineItem(Orange, count)
+
+      grandTotal(appleLineItem :: orangeLineItem :: Nil) should be(
+        appleLineItem.totalCost + orangeLineItem.totalCost)
+    }
   }
 
   test("Should group products into line items") {
 
-    val apples = Apple :: Apple :: Apple :: Nil
-    val oranges = Orange :: Orange :: Nil
+    for (appleCount <- 1 to 10; orangeCount <- 1 to 10) {
 
-    val lineItems = shuffle(mkLineItems(apples ++ oranges))
+      val apples = fill(appleCount)(Apple)
+      val oranges = fill(orangeCount)(Orange)
 
-    lineItems should contain only(LineItem(Apple, 3), LineItem(Orange, 2))
+      val lineItems = shuffle(mkLineItems(apples ++ oranges))
+      lineItems should contain only(LineItem(Apple, appleCount), LineItem(Orange, orangeCount))
+    }
+
+
   }
 }
