@@ -3,9 +3,9 @@ package com.jamesrodgers.gapgemini.pos
 import org.scalatest.{FunSuite, Matchers}
 
 
-class DiscountPointOfSalesTest extends FunSuite with Matchers with PointOfSale {
+class DiscountPointOfSalesTest extends FunSuite with Matchers with PricingStrategy with DiscountPointOfSale {
 
-  ignore("Should correctly sum reduced price apples") {
+  test("Should correctly sum reduced price apples") {
 
     for (count <- 1 to 100) {
       val appleLineItem = LineItem(Apple, count)

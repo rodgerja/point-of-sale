@@ -7,7 +7,7 @@ import org.scalatest._
 import scala.List.fill
 import scala.util.Random.shuffle
 
-class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
+class PointOfSaleTest extends FunSuite with Matchers with PricingStrategy with PointOfSale {
 
 
   test("A product should know its price") {

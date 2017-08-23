@@ -1,11 +1,21 @@
 package com.jamesrodgers.gapgemini.pos
 
 
-object Main extends PointOfSale with App {
-    val prompt = "(a: Apple, o: Orange, t: Total, c: Cancel) > "
-    val scanAndSum = readProducts _ andThen mkLineItems andThen receipt
+trait Checkout extends App {
+  this: PointOfSale =>
 
-    scanAndSum(prompt).foreach(println)
+  private val prompt = "(a: Apple, o: Orange, t: Total, c: Cancel) > "
+  private val scanAndSum = readProducts _ andThen mkLineItems andThen receipt
+
+  scanAndSum(prompt).foreach(println)
 }
+
+object Main extends PricingStrategy with PointOfSale with Checkout
+
+object DiscountMain extends DiscountPointOfSale with PointOfSale with Checkout
+
+
+
+
 
 

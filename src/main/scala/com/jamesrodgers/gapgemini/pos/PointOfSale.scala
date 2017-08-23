@@ -4,7 +4,9 @@ import scala.annotation.tailrec
 import scala.io.StdIn
 
 
-trait PointOfSale extends PricingStrategy {
+trait PointOfSale {
+
+  this: PricingStrategy =>
 
   val message = "Hello sales"
 
