@@ -1,5 +1,8 @@
 package com.jamesrodgers.gapgemini.pos
 
+import scala.annotation.tailrec
+import scala.io.StdIn
+
 
 trait PointOfSale {
 
@@ -13,10 +16,26 @@ trait PointOfSale {
     }.toSeq
 
   def receipt(lineItems: Seq[LineItem]): Seq[String] = {
-    lineItems.map(_.describe) :+ s"Total = ${format(grandTotal(lineItems))}"
+    lineItems.map(_.describe) :+ s"Total = ${formatCurrency(grandTotal(lineItems))}"
   }
 
-  private def format(value: Long): String = "%05.2f".format(value / 100.0)
+  def readProducts(prompt: String): Seq[Product] = {
+    @tailrec
+    def read(lines: Seq[Product]): Seq[Product] = {
+
+      val line = StdIn.readLine(prompt).trim
+
+      line match {
+        case "a" => read(lines :+ Apple)
+        case "o" => read(lines :+ Orange)
+        case "t" => lines
+        case "c" => Seq.empty
+        case _ => read(lines)
+      }
+
+    }
+    read(Nil)
+  }
 
 
 

@@ -1,5 +1,7 @@
 package com.jamesrodgers.gapgemini.pos
 
+import java.io.StringReader
+
 import org.scalatest._
 
 import scala.List.fill
@@ -80,6 +82,37 @@ class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
         orangeLineItem.describe,
         f"Total = $expectedTotal%05.2f")
     }
+  }
+
+  test("Should read products from console with 'a' for Apple 'o' for Orange 't' for exit") {
+
+    val input = "aooat".toList mkString System.lineSeparator()
+
+    val products: Seq[Product] = Console.withIn(new StringReader(input)) {
+      readProducts("")
+    }
+
+    products should contain theSameElementsInOrderAs (Apple :: Orange :: Orange :: Apple :: Nil)
+  }
+
+  test("Entering 'c' at the console cancels input") {
+    val input = "aooac".toList mkString System.lineSeparator()
+
+    val products: Seq[Product] = Console.withIn(new StringReader(input)) {
+      readProducts("")
+    }
+
+    products should be (Seq.empty)
+  }
+
+  test("Invalid console input is ignored") {
+    val input = "axoxoat".toList mkString System.lineSeparator()
+
+    val products: Seq[Product] = Console.withIn(new StringReader(input)) {
+      readProducts("")
+    }
+
+    products should contain theSameElementsInOrderAs (Apple :: Orange :: Orange :: Apple :: Nil)
   }
 
 }
