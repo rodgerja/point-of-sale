@@ -19,7 +19,7 @@ class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
   test("A line item should know its total") {
     (1 to 50) foreach { count =>
       LineItem(Apple, count).totalCost should be(count * Apple.price)
-      LineItem(Orange, 7).totalCost should be(7 * Orange.price)
+      LineItem(Orange, count).totalCost should be(count * Orange.price)
     }
   }
 }
