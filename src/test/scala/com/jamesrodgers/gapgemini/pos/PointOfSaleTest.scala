@@ -1,6 +1,7 @@
 package com.jamesrodgers.gapgemini.pos
 
 import org.scalatest._
+
 import scala.List.fill
 import scala.util.Random.shuffle
 
@@ -47,7 +48,34 @@ class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
       val lineItems = shuffle(mkLineItems(apples ++ oranges))
       lineItems should contain only(LineItem(Apple, appleCount), LineItem(Orange, orangeCount))
     }
-
-
   }
+
+  test("A line item should describe itself") {
+
+    val expectedApplePrice = "%05.2f".format(Apple.price / 100.0)
+    val expectedOrangePrice = "%05.2f".format(Orange.price / 100.0)
+
+    for (count <- 1 to 50) {
+
+      val expectedAppleTotal = "%05.2f".format(Apple.price * count / 100.0)
+      val expectedOrangeTotal = "%05.2f".format(Orange.price * count / 100.0)
+
+      LineItem(Apple, count).describe should be(s"$count Apple @ $expectedApplePrice = $expectedAppleTotal")
+      LineItem(Orange, count).describe should be(s"$count Orange @ $expectedOrangePrice = $expectedOrangeTotal")
+    }
+  }
+
+//  test("Should generate receipt") {
+//    val appleLineItem = LineItem(Apple, 12)
+//    val orangeLineItem = LineItem(Orange, 9)
+//    val lineItems = appleLineItem :: orangeLineItem :: Nil
+//
+//    val expectedTotal = (appleLineItem.totalCost + orangeLineItem.totalCost) / 100.0
+//
+//    receipt(lineItems) should contain inOrderOnly(
+//      appleLineItem.describe,
+//      orangeLineItem.describe,
+//      f"Total = $expectedTotal%05.2f")
+//  }
+
 }
