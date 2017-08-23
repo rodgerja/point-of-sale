@@ -11,4 +11,9 @@ class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
     Orange.price should be(25)
   }
 
+  test("A line item should know its product") {
+    LineItem(Apple, 5).product should be(Apple)
+    LineItem(Orange, 7).product should be(Orange)
+  }
+
 }
