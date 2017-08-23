@@ -22,4 +22,12 @@ class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
       LineItem(Orange, count).totalCost should be(count * Orange.price)
     }
   }
+
+  test("Line items can be totalled") {
+    val appleLineItem = LineItem(Apple, 8)
+    val orangeLineItem = LineItem(Orange, 4)
+    
+    grandTotal(appleLineItem :: orangeLineItem :: Nil) should be(
+      appleLineItem.totalCost + orangeLineItem.totalCost)
+  }
 }
