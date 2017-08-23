@@ -12,5 +12,12 @@ trait PointOfSale {
       case (k, v) => LineItem(k, v.size)
     }.toSeq
 
+  def receipt(lineItems: Seq[LineItem]): Seq[String] = {
+    lineItems.map(_.describe) :+ s"Total = ${format(grandTotal(lineItems))}"
+  }
+
+  private def format(value: Long): String = "%05.2f".format(value / 100.0)
+
+
 
 }

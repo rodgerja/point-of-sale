@@ -55,27 +55,31 @@ class PointOfSaleTest extends FunSuite with Matchers with PointOfSale {
     val expectedApplePrice = "%05.2f".format(Apple.price / 100.0)
     val expectedOrangePrice = "%05.2f".format(Orange.price / 100.0)
 
-    for (count <- 1 to 50) {
+    for (appleCount <- 1 to 10; orangeCount <- 1 to 10) {
 
-      val expectedAppleTotal = "%05.2f".format(Apple.price * count / 100.0)
-      val expectedOrangeTotal = "%05.2f".format(Orange.price * count / 100.0)
+      val expectedAppleTotal = "%05.2f".format(Apple.price * appleCount / 100.0)
+      val expectedOrangeTotal = "%05.2f".format(Orange.price * orangeCount / 100.0)
 
-      LineItem(Apple, count).describe should be(s"$count Apple @ $expectedApplePrice = $expectedAppleTotal")
-      LineItem(Orange, count).describe should be(s"$count Orange @ $expectedOrangePrice = $expectedOrangeTotal")
+      LineItem(Apple, appleCount).describe should be(s"$appleCount Apple @ $expectedApplePrice = $expectedAppleTotal")
+      LineItem(Orange, orangeCount).describe should be(s"$orangeCount Orange @ $expectedOrangePrice = $expectedOrangeTotal")
     }
   }
 
-//  test("Should generate receipt") {
-//    val appleLineItem = LineItem(Apple, 12)
-//    val orangeLineItem = LineItem(Orange, 9)
-//    val lineItems = appleLineItem :: orangeLineItem :: Nil
-//
-//    val expectedTotal = (appleLineItem.totalCost + orangeLineItem.totalCost) / 100.0
-//
-//    receipt(lineItems) should contain inOrderOnly(
-//      appleLineItem.describe,
-//      orangeLineItem.describe,
-//      f"Total = $expectedTotal%05.2f")
-//  }
+  test("Should generate receipt") {
+
+    for (appleCount <- 1 to 10; orangeCount <- 1 to 10) {
+
+      val appleLineItem = LineItem(Apple, appleCount)
+      val orangeLineItem = LineItem(Orange, orangeCount)
+      val lineItems = appleLineItem :: orangeLineItem :: Nil
+
+      val expectedTotal = (appleLineItem.totalCost + orangeLineItem.totalCost) / 100.0
+
+      receipt(lineItems) should contain inOrderOnly(
+        appleLineItem.describe,
+        orangeLineItem.describe,
+        f"Total = $expectedTotal%05.2f")
+    }
+  }
 
 }
