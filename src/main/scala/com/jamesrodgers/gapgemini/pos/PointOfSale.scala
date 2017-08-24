@@ -8,8 +8,6 @@ trait PointOfSale {
 
   this: PricingStrategy =>
 
-  val message = "Hello sales"
-
   def grandTotal(lineItems: Seq[LineItem]): Long = lineItems.map(_.totalCost).sum
 
   def mkLineItems(products: Seq[Product]): Seq[LineItem] =
